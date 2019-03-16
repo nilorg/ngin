@@ -14,7 +14,7 @@ const CurrentAccount = "current_account"
 // WebContext Web上下文
 type WebContext struct {
 	*gin.Context
-	pageName string
+	pageName, templatePrefix string
 }
 
 // RenderPage 渲染页面
@@ -69,6 +69,11 @@ func (ctx *WebContext) DelCurrentAccount() error {
 
 // WebControllerFunc Web控制器函数
 func WebControllerFunc(ctlFunc func(ctx *WebContext), pageName string) gin.HandlerFunc {
+	return WebControllerPrefixFunc(ctlFunc, "", pageName)
+}
+
+// WebControllerPrefixFunc Web控制器函数
+func WebControllerPrefixFunc(ctlFunc func(ctx *WebContext), prefix, pageName string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tmplCtx := &WebContext{
 			Context:  ctx,

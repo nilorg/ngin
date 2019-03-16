@@ -10,7 +10,11 @@ import (
 )
 
 // DefaultLoadTemplate ...
-func DefaultLoadTemplate(templatesDir string, funcMap template.FuncMap) multitemplate.Render {
+// prefix 可以省略不写。默认情况下不需要写，一个gin多模板的时候需要设置prefix
+func DefaultLoadTemplate(templatesDir, prefix string, funcMap template.FuncMap) multitemplate.Render {
+	if prefix != "" {
+		prefix += "_"
+	}
 	r := multitemplate.New()
 	// 加载布局
 	layouts, err := filepath.Glob(filepath.Join(templatesDir, "layouts/*.tmpl"))
@@ -23,7 +27,7 @@ func DefaultLoadTemplate(templatesDir string, funcMap template.FuncMap) multitem
 		panic(err)
 	}
 	for _, errPage := range errors {
-		tmplName := fmt.Sprintf("error_%s", filepath.Base(errPage))
+		tmplName := fmt.Sprintf("%serror_%s", prefix, filepath.Base(errPage))
 		r.AddFromFilesFuncs(tmplName, funcMap, errPage)
 	}
 
@@ -52,7 +56,7 @@ func DefaultLoadTemplate(templatesDir string, funcMap template.FuncMap) multitem
 			}
 			files = append(files, partials...)
 			files = append(files, pageItems...)
-			tmplName := fmt.Sprintf("%s_pages_%s", filepath.Base(layout), page.Name())
+			tmplName := fmt.Sprintf("%s%s_pages_%s", prefix, filepath.Base(layout), page.Name())
 			r.AddFromFilesFuncs(tmplName, funcMap, files...)
 		}
 	}
@@ -62,7 +66,7 @@ func DefaultLoadTemplate(templatesDir string, funcMap template.FuncMap) multitem
 		panic(err)
 	}
 	for _, singlePage := range singles {
-		tmplName := fmt.Sprintf("singles_%s", filepath.Base(singlePage))
+		tmplName := fmt.Sprintf("%ssingles_%s", prefix, filepath.Base(singlePage))
 		r.AddFromFilesFuncs(tmplName, funcMap, singlePage)
 	}
 	return r
