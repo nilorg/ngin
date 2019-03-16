@@ -23,7 +23,11 @@ func (ctx *WebContext) RenderPage(data gin.H) {
 	if ctx.GetHeader("X-PJAX") == "true" {
 		layout = "pjax_layout.tmpl"
 	}
-	tmplName := fmt.Sprintf("%s_pages_%s", layout, ctx.pageName)
+	prefix := ctx.templatePrefix
+	if prefix != "" {
+		prefix += "_"
+	}
+	tmplName := fmt.Sprintf("%s%s_pages_%s", prefix, layout, ctx.pageName)
 	if data == nil {
 		data = gin.H{
 			CurrentAccount: ctx.GetCurrentAccount(),
@@ -36,7 +40,11 @@ func (ctx *WebContext) RenderPage(data gin.H) {
 
 // RenderSinglePage 渲染单页面
 func (ctx *WebContext) RenderSinglePage(data gin.H) {
-	tmplName := fmt.Sprintf("singles_%s.tmpl", ctx.pageName)
+	prefix := ctx.templatePrefix
+	if prefix != "" {
+		prefix += "_"
+	}
+	tmplName := fmt.Sprintf("%ssingles_%s.tmpl", prefix, ctx.pageName)
 	if data == nil {
 		data = gin.H{
 			CurrentAccount: ctx.GetCurrentAccount(),
@@ -76,8 +84,9 @@ func WebControllerFunc(ctlFunc func(ctx *WebContext), pageName string) gin.Handl
 func WebControllerPrefixFunc(ctlFunc func(ctx *WebContext), prefix, pageName string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tmplCtx := &WebContext{
-			Context:  ctx,
-			pageName: pageName,
+			Context:        ctx,
+			templatePrefix: prefix,
+			pageName:       pageName,
 		}
 		ctlFunc(tmplCtx)
 	}
