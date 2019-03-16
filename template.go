@@ -11,26 +11,27 @@ import (
 )
 
 // LoadTemplateFunc 加载模板函数类
-type LoadTemplateFunc func(templatesDir string, funcMap template.FuncMap) multitemplate.Render
+type LoadTemplateFunc func(templatesDir, prefix string, funcMap template.FuncMap) multitemplate.Render
 
 // EngineTemplate gin引擎模板
 type EngineTemplate struct {
-	templatesDir     string
-	engine           *gin.Engine
-	watcher          *fsnotify.Watcher
-	Errors           <-chan error
-	loadTemplateFunc LoadTemplateFunc
-	funcMap          template.FuncMap
+	templatesDir, prefix string
+	engine               *gin.Engine
+	watcher              *fsnotify.Watcher
+	Errors               <-chan error
+	loadTemplateFunc     LoadTemplateFunc
+	funcMap              template.FuncMap
 }
 
 // NewEngineTemplate 创建一个gin引擎模板
-func NewEngineTemplate(templateDir string, engine *gin.Engine, tmplFunc LoadTemplateFunc, funcMap template.FuncMap) (*EngineTemplate, error) {
+func NewEngineTemplate(templateDir, prefix string, engine *gin.Engine, tmplFunc LoadTemplateFunc, funcMap template.FuncMap) (*EngineTemplate, error) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		return nil, err
 	}
 	return &EngineTemplate{
 		templatesDir:     templateDir,
+		prefix:           prefix,
 		engine:           engine,
 		loadTemplateFunc: tmplFunc,
 		watcher:          watcher,
@@ -90,5 +91,5 @@ func (tmpl *EngineTemplate) Close() error {
 
 // LoadTemplate 加载模板
 func (tmpl *EngineTemplate) LoadTemplate() multitemplate.Render {
-	return tmpl.loadTemplateFunc(tmpl.templatesDir, tmpl.funcMap)
+	return tmpl.loadTemplateFunc(tmpl.templatesDir, tmpl.prefix, tmpl.funcMap)
 }
