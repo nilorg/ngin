@@ -34,6 +34,7 @@ func NewEngineTemplate(templateDir string, engine *gin.Engine, tmplFunc LoadTemp
 		engine:           engine,
 		loadTemplateFunc: tmplFunc,
 		watcher:          watcher,
+		funcMap:          funcMap,
 		Errors:           make(<-chan error),
 	}, nil
 }
