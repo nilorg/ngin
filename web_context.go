@@ -14,7 +14,7 @@ const CurrentAccount = "current_account"
 // WebContext Web上下文
 type WebContext struct {
 	*gin.Context
-	pageName, templatePrefix string
+	pageName, template string
 }
 
 // RenderPage 渲染页面
@@ -23,11 +23,7 @@ func (ctx *WebContext) RenderPage(data gin.H) {
 	if ctx.GetHeader("X-PJAX") == "true" {
 		layout = "pjax_layout.tmpl"
 	}
-	prefix := ctx.templatePrefix
-	if prefix != "" {
-		prefix += "_"
-	}
-	tmplName := fmt.Sprintf("%s%s_pages_%s", prefix, layout, ctx.pageName)
+	tmplName := fmt.Sprintf("%s_%s_pages_%s", ctx.template, layout, ctx.pageName)
 	if data == nil {
 		data = gin.H{
 			CurrentAccount: ctx.GetCurrentAccount(),
@@ -40,11 +36,7 @@ func (ctx *WebContext) RenderPage(data gin.H) {
 
 // RenderSinglePage 渲染单页面
 func (ctx *WebContext) RenderSinglePage(data gin.H) {
-	prefix := ctx.templatePrefix
-	if prefix != "" {
-		prefix += "_"
-	}
-	tmplName := fmt.Sprintf("%ssingles_%s.tmpl", prefix, ctx.pageName)
+	tmplName := fmt.Sprintf("%s_singles_%s.tmpl", ctx.template, ctx.pageName)
 	if data == nil {
 		data = gin.H{
 			CurrentAccount: ctx.GetCurrentAccount(),
@@ -76,17 +68,12 @@ func (ctx *WebContext) DelCurrentAccount() error {
 }
 
 // WebControllerFunc Web控制器函数
-func WebControllerFunc(ctlFunc func(ctx *WebContext), pageName string) gin.HandlerFunc {
-	return WebControllerPrefixFunc(ctlFunc, "", pageName)
-}
-
-// WebControllerPrefixFunc Web控制器函数
-func WebControllerPrefixFunc(ctlFunc func(ctx *WebContext), prefix, pageName string) gin.HandlerFunc {
+func WebControllerFunc(ctlFunc func(ctx *WebContext), template, pageName string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tmplCtx := &WebContext{
-			Context:        ctx,
-			templatePrefix: prefix,
-			pageName:       pageName,
+			Context:  ctx,
+			template: template,
+			pageName: pageName,
 		}
 		ctlFunc(tmplCtx)
 	}
