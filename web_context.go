@@ -23,7 +23,7 @@ func (ctx *WebContext) RenderPage(data gin.H) {
 	if ctx.GetHeader("X-PJAX") == "true" {
 		layout = "pjax_layout.tmpl"
 	}
-	tmplName := fmt.Sprintf("%s_%s_pages_%s", ctx.template, layout, ctx.pageName)
+	tmplName := fmt.Sprintf("%s/%s_pages/%s", ctx.template, layout, ctx.pageName)
 	if data == nil {
 		data = gin.H{
 			CurrentAccount: ctx.GetCurrentAccount(),
@@ -36,7 +36,7 @@ func (ctx *WebContext) RenderPage(data gin.H) {
 
 // RenderSinglePage 渲染单页面
 func (ctx *WebContext) RenderSinglePage(data gin.H) {
-	tmplName := fmt.Sprintf("%s_singles_%s.tmpl", ctx.template, ctx.pageName)
+	tmplName := fmt.Sprintf("%s/singles/%s.tmpl", ctx.template, ctx.pageName)
 	if data == nil {
 		data = gin.H{
 			CurrentAccount: ctx.GetCurrentAccount(),

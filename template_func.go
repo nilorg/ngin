@@ -50,7 +50,7 @@ func loadTemplate(r *multitemplate.Render, templatesDir, template string, funcMa
 			}
 			files = append(files, partials...)
 			files = append(files, pageItems...)
-			tmplName := fmt.Sprintf("%s_%s_pages_%s", template, filepath.Base(layout), page.Name())
+			tmplName := fmt.Sprintf("%s/%s_pages/%s", template, filepath.Base(layout), page.Name())
 			r.AddFromFilesFuncs(tmplName, funcMap, files...)
 		}
 	}
@@ -60,7 +60,7 @@ func loadTemplate(r *multitemplate.Render, templatesDir, template string, funcMa
 		panic(err)
 	}
 	for _, singlePage := range singles {
-		tmplName := fmt.Sprintf("%s_singles_%s", template, filepath.Base(singlePage))
+		tmplName := fmt.Sprintf("%s/singles/%s", template, filepath.Base(singlePage))
 		r.AddFromFilesFuncs(tmplName, funcMap, singlePage)
 	}
 }
