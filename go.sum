@@ -39,8 +39,8 @@ github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd h1:TRLaZ9cD/w
 github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
 github.com/modern-go/reflect2 v1.0.1 h1:9f412s+6RmYXLWZSEzVVgPGK7C2PphHj5RJrvfx9AWI=
 github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
-github.com/nilorg/sdk v0.0.0-20190304074330-5e3e33b4ae9f h1:gvAe4MaBEsZZ6OUg8thKFhj1tZbg/8gWggi8KBaDMPg=
-github.com/nilorg/sdk v0.0.0-20190304074330-5e3e33b4ae9f/go.mod h1:3ucEfFqjxRb1q9t38i3arReUBkAOjASdgmRpOz4EBKA=
+github.com/nilorg/sdk v0.0.0-20190707070334-556f96ecae9c h1:3Du1N7E02WuD7YXSPofyuajN6RuyY1x9vXNG+AnmVRo=
+github.com/nilorg/sdk v0.0.0-20190707070334-556f96ecae9c/go.mod h1:X1swpPdqguAZaBDoEPyEWHSsJii0YQ1o+3piMv6W3JU=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/quasoft/memstore v0.0.0-20180925164028-84a050167438/go.mod h1:wTPjTepVu7uJBYgZ0SdWHQlIas582j6cn2jgk4DDdlg=
