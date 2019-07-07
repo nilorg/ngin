@@ -3,10 +3,10 @@ package ngin
 import (
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"path/filepath"
 
 	"github.com/gin-contrib/multitemplate"
+	"github.com/nilorg/sdk/path"
 )
 
 func loadTemplate(r *multitemplate.Render, templatesDir, template string, funcMap template.FuncMap) {
@@ -24,7 +24,6 @@ func loadTemplate(r *multitemplate.Render, templatesDir, template string, funcMa
 		tmplName := fmt.Sprintf("%s_error_%s", template, filepath.Base(errPage))
 		r.AddFromFilesFuncs(tmplName, funcMap, errPage)
 	}
-
 	// 加载局部页面
 	partials, err := filepath.Glob(filepath.Join(templatesDir, template, "partials/*.tmpl"))
 	if err != nil {
@@ -32,25 +31,28 @@ func loadTemplate(r *multitemplate.Render, templatesDir, template string, funcMa
 	}
 
 	// 页面文件夹
-	pages, err := ioutil.ReadDir(filepath.Join(templatesDir, template, "pages"))
+	var pageDirs []string
+	basePagePath := filepath.Join(templatesDir, template, "pages")
+	err = path.Dirs(basePagePath, &pageDirs)
 	if err != nil {
 		panic(err)
 	}
-	for _, page := range pages {
-		if !page.IsDir() {
-			continue
-		}
+	for _, pageDir := range pageDirs {
 		for _, layout := range layouts {
-			pageItems, err := filepath.Glob(filepath.Join(templatesDir, template, fmt.Sprintf("pages/%s/*.tmpl", page.Name())))
+			pageItems, err := filepath.Glob(filepath.Join(pageDir, "*.tmpl"))
 			if err != nil {
 				panic(err)
+			}
+			if len(pageItems) == 0 {
+				continue
 			}
 			files := []string{
 				layout,
 			}
 			files = append(files, partials...)
 			files = append(files, pageItems...)
-			tmplName := fmt.Sprintf("%s/%s_pages/%s", template, filepath.Base(layout), page.Name())
+			pageName := pageDir[len(basePagePath)+1:]
+			tmplName := fmt.Sprintf("%s/%s_pages/%s", template, filepath.Base(layout), pageName)
 			r.AddFromFilesFuncs(tmplName, funcMap, files...)
 		}
 	}
