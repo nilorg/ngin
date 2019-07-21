@@ -14,12 +14,12 @@ const CurrentAccount = "current_account"
 // WebContext Web上下文
 type WebContext struct {
 	*gin.Context
-	pageName, template string
+	layout, pageName, template string
 }
 
 // RenderPage 渲染页面
 func (ctx *WebContext) RenderPage(data gin.H) {
-	layout := "layout.tmpl"
+	layout := ctx.layout
 	if ctx.GetHeader("X-PJAX") == "true" {
 		layout = "pjax_layout.tmpl"
 	}
@@ -72,6 +72,23 @@ func WebControllerFunc(ctlFunc func(ctx *WebContext), template, pageName string)
 	return func(ctx *gin.Context) {
 		tmplCtx := &WebContext{
 			Context:  ctx,
+			layout:   "layout.tmpl",
+			template: template,
+			pageName: pageName,
+		}
+		ctlFunc(tmplCtx)
+	}
+}
+
+// WebControllerLayoutFunc Layout,Web控制器函数
+func WebControllerLayoutFunc(ctlFunc func(ctx *WebContext), layout, template, pageName string) gin.HandlerFunc {
+	if layout == "" {
+		layout = "layout.tmpl"
+	}
+	return func(ctx *gin.Context) {
+		tmplCtx := &WebContext{
+			Context:  ctx,
+			layout:   layout,
 			template: template,
 			pageName: pageName,
 		}
