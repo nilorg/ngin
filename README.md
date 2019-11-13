@@ -19,7 +19,7 @@ Web framework 包装一些gin功能。
 ```bash
 go get -u github.com/gin-contrib/multitemplate
 
-go get -u github.com/nilorg/pkg/gin
+go get -u github.com/nilorg/ngin
 ```
 
 # 加载模板
@@ -85,11 +85,11 @@ engine.HTMLRender = loadTemplates("./templates")
 ```
 # 给路由配置模板
 ```go 
-import ngin "github.com/nilorg/pkg/gin"
+import ngin "github.com/nilorg/ngin"
 
 engine.GET("/detail", ngin.WebControllerFunc(func(ctx *ngin.WebContext) {
 		ctx.RenderPage(gin.H{
 			"title":"标题",
 		})
-	}, "posts_detail"))
+	}, ngin.PageName("posts_detail")))
 ```
