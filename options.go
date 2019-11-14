@@ -3,7 +3,7 @@ package ngin
 // SessionCurrentAccount ...
 const SessionCurrentAccount = "current_account"
 
-//可选参数列表
+// Options 可选参数列表
 type Options struct {
 	Layout                   string
 	PageName                 string
@@ -13,8 +13,8 @@ type Options struct {
 	SessionCurrentAccountKey string
 }
 
-// newOptions 创建可选参数
-func newOptions(opts ...Option) Options {
+// NewOptions 创建可选参数
+func NewOptions(opts ...Option) Options {
 	opt := Options{
 		Pjax:                     false,
 		PjaxLayout:               "pjax_layout.tmpl",
