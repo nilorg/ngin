@@ -52,7 +52,7 @@ func NewWebAPIControllerFunc(ctlFunc func(ctx *WebAPIContext), opts ...Option) g
 	return func(ctx *gin.Context) {
 		tmplCtx := &WebAPIContext{
 			Context: ctx,
-			opts:    NewOptions(opts...),
+			opts:    newOptions(opts...),
 		}
 		ctlFunc(tmplCtx)
 	}

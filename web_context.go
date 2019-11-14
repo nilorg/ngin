@@ -78,7 +78,7 @@ func NewWebControllerFunc(ctlFunc func(ctx *WebContext), opts ...Option) gin.Han
 	return func(ctx *gin.Context) {
 		tmplCtx := &WebContext{
 			Context: ctx,
-			opts:    NewOptions(opts...),
+			opts:    newOptions(opts...),
 		}
 		ctlFunc(tmplCtx)
 	}
