@@ -29,13 +29,13 @@ func (ctx *WebContext) RenderPage(data gin.H, opts ...Option) {
 	}
 	pageName := ctx.opts.PageName
 	tmplName := fmt.Sprintf("%s/%s_pages/%s", ctx.opts.Template, layout, pageName)
+	fmt.Printf("tmplName: %s\n", tmplName)
 	if data == nil {
-		data = gin.H{
-			ctx.opts.SessionCurrentAccountKey: ctx.GetCurrentAccount(),
-		}
-	} else {
-		data[ctx.opts.SessionCurrentAccountKey] = ctx.GetCurrentAccount()
+		data = gin.H{}
 	}
+	data[ctx.opts.SessionCurrentAccountKey] = ctx.GetCurrentAccount()
+	data["constant"] = ctx.opts.GlobalConstant
+	data["variable"] = ctx.opts.GlobalVariable
 	ctx.HTML(http.StatusOK, tmplName, data)
 }
 
@@ -44,12 +44,11 @@ func (ctx *WebContext) RenderSinglePage(data gin.H, opts ...Option) {
 	ctx.loadOptions(opts...)
 	tmplName := fmt.Sprintf("%s/singles/%s.tmpl", ctx.opts.Template, ctx.opts.PageName)
 	if data == nil {
-		data = gin.H{
-			ctx.opts.SessionCurrentAccountKey: ctx.GetCurrentAccount(),
-		}
-	} else {
-		data[ctx.opts.SessionCurrentAccountKey] = ctx.GetCurrentAccount()
+		data = gin.H{}
 	}
+	data[ctx.opts.SessionCurrentAccountKey] = ctx.GetCurrentAccount()
+	data["constant"] = ctx.opts.GlobalConstant
+	data["variable"] = ctx.opts.GlobalVariable
 	ctx.HTML(http.StatusOK, tmplName, data)
 }
 
