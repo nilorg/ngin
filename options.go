@@ -3,13 +3,15 @@ package ngin
 // SessionCurrentAccount ...
 const SessionCurrentAccount = "current_account"
 
-//可选参数列表
+// Options 可选参数列表
 type Options struct {
 	Layout                   string
 	PageName                 string
 	Template                 string
 	Pjax                     bool
 	PjaxLayout               string
+	GlobalVariable           map[string]interface{}
+	GlobalConstant           map[string]interface{}
 	SessionCurrentAccountKey string
 }
 
@@ -21,6 +23,8 @@ func newOptions(opts ...Option) Options {
 		Layout:                   "layout.tmpl",
 		Template:                 "default",
 		SessionCurrentAccountKey: SessionCurrentAccount,
+		GlobalVariable:           map[string]interface{}{},
+		GlobalConstant:           map[string]interface{}{},
 	}
 	for _, o := range opts {
 		o(&opt)
@@ -49,5 +53,19 @@ func PageName(pageName string) Option {
 func Template(template string) Option {
 	return func(o *Options) {
 		o.Template = template
+	}
+}
+
+// GlobalVariable ...
+func GlobalVariable(variable map[string]interface{}) Option {
+	return func(o *Options) {
+		o.GlobalVariable = variable
+	}
+}
+
+// GlobalConstant ...
+func GlobalConstant(constant map[string]interface{}) Option {
+	return func(o *Options) {
+		o.GlobalConstant = constant
 	}
 }
