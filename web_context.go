@@ -2,7 +2,6 @@ package ngin
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -36,7 +35,7 @@ func (ctx *WebContext) RenderPage(data gin.H, opts ...Option) {
 	data[ctx.opts.SessionCurrentAccountKey] = ctx.GetCurrentAccount()
 	data["constant"] = ctx.opts.GlobalConstant
 	data["variable"] = ctx.opts.GlobalVariable
-	ctx.HTML(http.StatusOK, tmplName, data)
+	ctx.HTML(ctx.opts.StatusCode, tmplName, data)
 }
 
 // RenderSinglePage 渲染单页面
@@ -49,7 +48,7 @@ func (ctx *WebContext) RenderSinglePage(data gin.H, opts ...Option) {
 	data[ctx.opts.SessionCurrentAccountKey] = ctx.GetCurrentAccount()
 	data["constant"] = ctx.opts.GlobalConstant
 	data["variable"] = ctx.opts.GlobalVariable
-	ctx.HTML(http.StatusOK, tmplName, data)
+	ctx.HTML(ctx.opts.StatusCode, tmplName, data)
 }
 
 // SetCurrentAccount 设置当前账户
