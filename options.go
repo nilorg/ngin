@@ -1,10 +1,13 @@
 package ngin
 
+import "net/http"
+
 // SessionCurrentAccount ...
 const SessionCurrentAccount = "current_account"
 
 // Options 可选参数列表
 type Options struct {
+	StatusCode               int
 	Layout                   string
 	PageName                 string
 	Template                 string
@@ -18,6 +21,7 @@ type Options struct {
 // newOptions 创建可选参数
 func newOptions(opts ...Option) Options {
 	opt := Options{
+		StatusCode:               http.StatusOK,
 		Pjax:                     false,
 		PjaxLayout:               "pjax_layout.tmpl",
 		Layout:                   "layout.tmpl",
@@ -34,6 +38,13 @@ func newOptions(opts ...Option) Options {
 
 // Option 为可选参数赋值的函数
 type Option func(*Options)
+
+// StatusCode ...
+func StatusCode(statusCode int) Option {
+	return func(o *Options) {
+		o.StatusCode = statusCode
+	}
+}
 
 // Layout ...
 func Layout(layout string) Option {
