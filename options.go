@@ -80,3 +80,17 @@ func GlobalConstant(constant map[string]interface{}) Option {
 		o.GlobalConstant = constant
 	}
 }
+
+// Pjax ...
+func Pjax(pjax bool) Option {
+	return func(o *Options) {
+		o.Pjax = pjax
+	}
+}
+
+// PjaxLayout ...
+func PjaxLayout(pjaxLayout string) Option {
+	return func(o *Options) {
+		o.PjaxLayout = pjaxLayout
+	}
+}
